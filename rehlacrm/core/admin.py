@@ -3,7 +3,7 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import Contact, ProductType, Destination, Product, CustomProduct, Lead
 from django.contrib.admin import SimpleListFilter
 from import_export.admin import ImportExportModelAdmin
-
+from django.contrib.contenttypes.models import ContentType
 # class HasImages(SimpleListFilter):
 #     title = "Photos" 
 #     parameter_name ="pic"
@@ -47,6 +47,11 @@ class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 class LeadAdmin(ImportExportModelAdmin):
     list_display = ('id', 'status', 'content_type', )
+    exclude = ('object_id',)
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "content_type":
+            kwargs["queryset"] = ContentType.objects.filter(model__in=['contact', 'destination', 'product', 'customproduct'])
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Lead, LeadAdmin)
