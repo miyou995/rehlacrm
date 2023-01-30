@@ -1,8 +1,8 @@
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from .models import Contact, ProductType, Destination, Product, CustomProduct, Lead
 from django.contrib.admin import SimpleListFilter
 from import_export.admin import ImportExportModelAdmin
-
 
 # class HasImages(SimpleListFilter):
 #     title = "Photos" 
@@ -23,24 +23,33 @@ from import_export.admin import ImportExportModelAdmin
 
 
 
-class LeadsInline(admin.TabularInline):
+class LeadsInline(GenericTabularInline):
     model = Lead
+    extra = 1
 
-
+class DestinationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'ville', )
 
 
 class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'reference', 'name', 'category', 'price', 'price_24', 'price_12', 'price_48', 'price_60', 'price_72','new', 'top', 'actif', 'stock','to_home_page', 'order')
-    prepopulated_fields = {"slug": ("name",)}
-    list_display_links = ('id','name' , 'reference')
+    list_display = ('id', 'start_date', 'destination', )
+    list_display_links = ('id','destination' )
     list_per_page = 40
     save_as = True
-    list_filter = ('actif', 'is_pack',HasImages , 'new', 'to_home_page', 'category')
-    list_editable = ['category', 'price', 'price_24', 'price_12', 'new', 'top', 'to_home_page','actif',  'stock', 'order']
-    search_fields = ('id', 'name','reference','category__name', 'category__id')
-    exclude  = ['is_facility', 'old_price']
-    inlines = [PhotosLinesAdmin, AtributesValueInline,ProductDetailInline, ProductDocumentInline]# a comenter pour KAHRABACENTER.com
-    resource_class = ProductResource
-    form = ProductModelForm
+    list_filter = ('start_date', )
+    list_editable = ['start_date',]
+    search_fields = ('id', 'destination')
+    inlines = [LeadsInline]# a comenter pour KAHRABACENTER.com
+    # exclude  = ['is_facility', 'old_price']
+    # resource_class = ProductResource
+    # form = ProductModelForm
+
+
+class LeadAdmin(ImportExportModelAdmin):
+    list_display = ('id', 'status', 'content_type', )
+
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Lead, LeadAdmin)
+admin.site.register(Destination, DestinationAdmin)
 
 
