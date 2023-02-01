@@ -53,7 +53,17 @@ class LeadAdmin(ImportExportModelAdmin):
             kwargs["queryset"] = ContentType.objects.filter(model__in=['contact', 'destination', 'product', 'customproduct'])
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+
+class ContactAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'name', 'commune', 'email', 'phone', 'big_client', 'email', )
+    list_display_links = ('id','name' )
+    search_fields = ('id', 'name', 'phone')
+    list_filter = ('big_client', )
+    list_editable = ['big_client',]
+
+
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Contact, ContactAdmin)
 admin.site.register(Lead, LeadAdmin)
 admin.site.register(Destination, DestinationAdmin)
 

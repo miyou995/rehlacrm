@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+
+{% block title %}{{ title }} | {{ site_title|default:_('REHLA CRM Dashboard') }}{% endblock %}
+
+
+
+
+{% block extrastyle %}
+{% comment %} <link rel="stylesheet" href="{% static 'css/admin.css' %}">   {% endcomment %}
+{% endblock extrastyle %}
+{% block extrahead %}{{ block.super }}
+<link rel="icon" href="{% static 'images/admin_logo.png' %}" sizes="48x48" />
+
+{% endblock %}
+
