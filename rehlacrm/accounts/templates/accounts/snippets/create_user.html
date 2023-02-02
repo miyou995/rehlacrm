@@ -1,0 +1,52 @@
+{% load mptt_tags %}
+ 
+                    <!-- Modal starts -->              
+                  <div class="modal fade" id="exampleModal-6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel-2">Ajouter un utilisateur</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="{% url 'accounts:useradd' %}" method="post" name="createUser" id="createUser" class="form-sample" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="form-group row">
+                                      <label class="col-3" for="id_email">Email</label>
+                                      <div class="col-8">
+                                        <input  type="email" name="email" value="" id="id_email"  required class="form-control">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="form-group row">
+                                      <label class="col-3" for="id_password1">Mot de passe</label>
+                                      <div class="col-8">
+                                        <input type="password" class="form-control {% if form.password.errors %}  is-invalid{% endif %}" id="id_password1" name="password" value="{{ form.password.value|default:"" }}"> 
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="form-group row">
+                                      <label class="col-3" for="id_password2">Confirmation du mot de passe </label>
+                                      <div class="col-8">
+                                        <input type="password" class="form-control{% if form.password2.errors %}  is-invalid{% endif %}" id="id_password2" name="password2" value="{{ form.password2.value|default:"" }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                              <button for="createUser" type="submit" class="btn btn-succes pop-btn m-2">Confirmer</button>
+                                </div>
+                      </div>
+                    </div>
+                  </div> 
+            <!-- Modal Ends -->

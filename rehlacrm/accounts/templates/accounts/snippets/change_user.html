@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Compte</title>
+{% endblock %}
+  {% with user.user_permissions.all as user_permissions %}
+    <div class="content-wrapper">
+      <div class="page-header"><h3 class="page-title">Compte</h3></div> 
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Modifier l'utilisateur</h4>
+            <div class="d-flex justify-content-end">
+              <button for="createUser" type="submit" class="btn btn-succes pop-btn m-2" data-toggle="modal" data-target="#changePasswordModal-6">Modifier de mot de passe</button>
+            </div>
+            <form action="{% url 'accounts:changeuser' user.pk %}" method="post"  class="form-sample" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group row">
+                      <label class="col-3" for="id_email">Email</label>
+                      <div class="col-8">
+                        <input  type="email" name="email"  id="id_email"   class="form-control" value="{{user.email}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label" for="id_picture">Photo</label>
+                      <div class="input-group col-sm-8">
+                          <input type="text" class="form-control file-upload-info"  name="picture"  id="id_picture"  disabled="" placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="file">Upload</button>
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                      <div class="form-group row">
+                      <label class="col-3" for="id_role">Role</label>
+                        <div class="col-8">
+                          <input  type="text" name="role"  id="id_role"   class="form-control" value="{{user.role}}">
+                        </div>
+                      </div>
+                    </div> 
+                </div> 
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group row">
+                      <label class="col-3" for="id_warehouse">Dépot </label>
+                      <div class="col-8">
+                        <select class="form-control"  name="warehouse" id="id_warehouse"> 
+                          {% comment %} <option value="{{user.warehouse.id}}" {% if user.warehouse.id == warehouse.id %}selected{% endif %}>{{user.warehouse}}</option> {% endcomment %}
+                          <option value="">--------</option>
+                          {% for warehouse in warehouses %}
+                              <option value="{{warehouse.id}}" {% if user.warehouse.id == warehouse.id %}selected{% endif %}>{{warehouse.name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h4>Authorisations:</h4>
+                <div class="row">
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Produits" perms_list=post_permission_product %}
+                  </div>
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Catégorie" perms_list=post_permission_category %}
+                  </div>
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Marques" perms_list=post_permission_brand %}
+                  </div>
+                </div>
+                  <div class="row">
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Dépots" perms_list=post_permission_warehouse %}
+                  </div>
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Commande fournisseur" perms_list=post_permission_orderin %}
+                  </div>
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title="Commande interne, client" perms_list=post_permission_orderout %}
+                  </div>
+                  <div class="col-md-4">
+                    {% include "accounts/snippets/permissions_list_block.html" with perm_title=" Comptes/ Utilisateurs" perms_list=post_permission_user %}
+                  </div>
+                  
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group row">
+                      <label class="col-3" for="id_notes">note</label>
+                      <div class="col-8">
+                      <textarea class="form-control" id="id_notes" name="notes" cols="40" rows="4" >{{user.notes}} </textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="form-group row">
+                        <label class="col-4" for="is_active">Actif</label>
+                        <div class="col-2">
+                          <input type="checkbox" class="form-check-input" {% if user.is_active %} checked {% endif %} name="is_active" id="is_active" > 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group row">
+                        <label class="col-4" for="is_staff">Staff</label>
+                        <div class="col-2">
+                          <input type="checkbox" class="form-check-input" {% if user.is_staff %}checked {% endif %} name="is_staff" id="is_staff" > 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group row">
+                        <label class="col-4" for="is_manager">Manager</label>
+                        <div class="col-2">
+                          <input type="checkbox" class="form-check-input"  {% if user.is_manager %} checked {% endif %} name="is_manager" id="is_manager" > 
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
+                  <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                  <input type="hidden" name="my_user" value={{user.pk}}>
+                </div> 
+              </form>
+
+          </div>
+        </div>
+      </div> 
+    </div>
+    {% include 'accounts/snippets/change_password.html' %}
+  {% endwith %}
+{% endblock content %}

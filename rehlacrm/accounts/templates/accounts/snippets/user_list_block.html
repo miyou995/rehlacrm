@@ -1,0 +1,25 @@
+    <tr>
+        <td>
+             {{user.id}}
+        </td>
+        <td> {{user.email}}
+        </td>
+        <td class="py-1"><a href="{{user.warehouse.get_absolute_url}}">{{user.warehouse}}</a>
+        </td>
+        <td class="py-1">
+            {% if user.role %}{{user.role}}{% endif %}
+        </td>
+        <td>
+            <input type="checkbox" {% if user.is_manager %} checked {% endif %}  class="form-check-input" disabled>
+        </td>
+        <td>
+            <input type="checkbox" {% if user.is_staff %} checked {% endif %}  class="form-check-input" disabled>
+        </td>
+        <td>
+            <input type="checkbox" {% if user.is_active %} checked {% endif %}  class="form-check-input" disabled>  
+        </td>
+        <td>
+            <a href="{% url 'accounts:changeuser' user.pk %}" style="color:#000;" ><i class="fas fa-edit"></i></a>
+            {% comment %} <a href="#"style="color:#000;" data-toggle="modal" data-target="#userModal-{{user.pk}}"><i class="fas fa-ellipsis-v"></i></a> {% endcomment %}
+        </td>
+    </tr>

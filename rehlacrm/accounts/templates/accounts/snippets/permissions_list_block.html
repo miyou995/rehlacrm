@@ -1,0 +1,11 @@
+<div class="form-group">
+    {{perm_title}}
+    {% for perm in perms_list %}
+    <div class="form-check form-check-primary">
+        <label class="form-check-label">
+          <input type="checkbox" name="perms" {% if perm in user_permissions %}checked{% endif %} class="form-check-input" value="{{perm.id}}">
+          {{perm.name}}
+      </label>  
+    </div>
+    {% endfor %}
+  </div>
