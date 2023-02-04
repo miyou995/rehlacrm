@@ -30,15 +30,15 @@ class LeadInlineFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         super(LeadInlineFormSet, self).__init__(*args, **kwargs)
         # Now we need to make a queryset to each field of each form inline
-        self.queryset = ContentType.objects.filter(model__in=['contact', 'destination', 'product', 'customproduct'])
-        # kwargs["queryset"] = ContentType.objects.filter(model__in=['contact', 'destination', 'product', 'customproduct'])
+        # self.queryset = ContentType.objects.filter(model__in=['product', 'customproduct'])
+        kwargs["content_type"] = ContentType.objects.filter(model__in=['product', 'customproduct'])
         
 
 
 class LeadsContactInline(admin.TabularInline):
     model = Lead
     formset = LeadInlineFormSet
-    extra = 1
+    extra = 0
 
 class LeadsInline(GenericTabularInline):
     model = Lead
